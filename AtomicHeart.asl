@@ -69,7 +69,7 @@ update
 {
 	//DEBUG CODE 
 	//print(modules.First().ModuleMemorySize.ToString());
-	//print(current.loading.ToString());
+	print(current.InGame.ToString());
 }
 
 isLoading
