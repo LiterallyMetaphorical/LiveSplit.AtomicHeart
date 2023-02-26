@@ -1,37 +1,70 @@
 /*
 Scanning Best Practices:
 
-bool loading
-just a boolean, set "Memory Scan Options" to HogwartsLegacy.exe - 1 on loading screen, 0 everywhere else
+bool InGame
+just a boolean, set "Memory Scan Options" to AtomicHeart-Win64-Shipping.exe - 0 on loading screen, 1 in game and on main menu
 
-string quest
-UTF String
-From a fresh game, get past the health tutorial and walk out to the cliff for a bit.
-
-In the Menus                   // 7209033
-On Quest: The Path to Hogwarts // 7209039
-On Quest: Welcome to Hogwarts  // 7209039
+int InGame
+set "Memory Scan Options" to AtomicHeart-Win64-Shipping.exe - scan for a 4Byte value of 2 while on the main menu, and 3 while in the loading screen. as well as in game
 */
 
 state("AtomicHeart-Win64-Shipping", "Steam v1.0")
 {
     bool InGame    : 0x646CC40;
+    int  MainMenu  : 0x6349DC0; // doesnt actually work
 }
 
 state("AtomicHeart-WinGDK-Shipping", "XboxGP v1.0")
 {
     bool InGame    : 0x6544F60;
+    int  MainMenu  : 0x6349DC0; // doesnt actually work
+}
+
+state("AtomicHeart-Win64-Shipping", "VKPlay v1.0")
+{
+    bool InGame    : 0x646AB40;
+    int  MainMenu  : 0x6345C40;
+}
+
+state("AtomicHeart-Win64-Shipping", "Steam v1.1")
+{
+    bool InGame    : 0x646ECC0;
+    int  MainMenu  : 0x6349DC0;
+}
+
+state("AtomicHeart-WinGDK-Shipping", "XboxGP v1.1")
+{
+    bool InGame    : 0x6551620;
+    int  MainMenu  : 0x6349DC0; // doesnt actually work
+}
+
+state("AtomicHeart-Win64-Shipping", "Steam v1.2")
+{
+    bool InGame    : 0x646ECC0;
+    int  MainMenu  : 0x6349DC0;
 }
 
 init
 {
-switch (modules.First().ModuleMemorySize) 
+switch (modules.First().ModuleMemorySize) //all case #'s converted from Decimal to Hexadecimal cause it looks pretty
     {
-        case 451141632: 
+        case 0x1AE3E000: 
             version = "Steam v1.0";
             break;
-        case 421130240: 
+        case 0x1919F000: 
             version = "XboxGP v1.0";
+            break;
+        case 0x1BA55000: 
+            version = "VKPlay v1.0";
+            break;
+        case 0x1AB7C000: 
+            version = "Steam v1.1";
+            break;
+        case 0x18D77000: 
+            version = "XboxGP v1.1";
+            break;
+        case 0x1ABB4000: 
+            version = "Steam v1.2";
             break;
         default:
         print("Unknown version detected");
@@ -65,11 +98,16 @@ onStart
     timer.IsGameTimePaused = true;
 }
 
+start
+{
+    return old.MainMenu == 2 && current.MainMenu == 3 && !current.InGame;
+}
+
 update
 {
 	//DEBUG CODE 
 	//print(modules.First().ModuleMemorySize.ToString());
-	print(current.InGame.ToString());
+	//print(current.MainMenu.ToString());
 }
 
 isLoading
