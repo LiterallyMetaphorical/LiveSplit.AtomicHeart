@@ -47,7 +47,7 @@ state("AtomicHeart-Win64-Shipping", "Steam v1.2")
 state("AtomicHeart-Win64-Shipping", "VKPlay v1.2")
 {
     bool InGame    : 0x646ECC0;
-    int  MainMenu  : 0x6345C40;
+    int  MainMenu  : 0x6349DC0;
 }
 
 init
