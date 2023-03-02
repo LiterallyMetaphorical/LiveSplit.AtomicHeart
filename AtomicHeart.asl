@@ -44,6 +44,12 @@ state("AtomicHeart-Win64-Shipping", "Steam v1.2")
     int  MainMenu  : 0x6349DC0;
 }
 
+state("AtomicHeart-Win64-Shipping", "VKPlay v1.2")
+{
+    bool InGame    : 0x646ECC0;
+    int  MainMenu  : 0x6345C40;
+}
+
 init
 {
 switch (modules.First().ModuleMemorySize) //all case #'s converted from Decimal to Hexadecimal cause it looks pretty
@@ -65,6 +71,9 @@ switch (modules.First().ModuleMemorySize) //all case #'s converted from Decimal 
             break;
         case 0x1ABB4000: 
             version = "Steam v1.2";
+            break;
+        case 0x1B153000: 
+            version = "VKPlay v1.2";
             break;
         default:
         print("Unknown version detected");
